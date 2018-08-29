@@ -18,6 +18,10 @@ class ToolServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-blogify-tool');
 
+        $this->publishes([
+            $this->configPath() => config_path('nova-blogify-tool.php')
+        ],'nova-blogify-tool-config');
+
         $this->app->booted(function () {
             $this->routes();
 
@@ -48,6 +52,14 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom($this->configPath(), 'nova-blogify-tool');
+    }
+
+    /**
+     * @return string
+     */
+    protected function configPath()
+    {
+        return __DIR__.'/../config/nova-blogify-tool.php';
     }
 }
